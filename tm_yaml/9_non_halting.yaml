@@ -1,0 +1,45 @@
+# 00000 (0F) 1^n 00000
+# collatz n
+#
+# (0F)111  =>  1 (0C) 11
+# (0F)1111 => 11 (0A) 11 => (0F) 11
+#
+# 4 states (A, B, C, D) for 2 pointers: check even or odd
+# 2 states (E, F) for even cases
+# 3 states (G, H, J) for odd cases
+#
+blank: '0'
+start state: F
+input: '01111'
+
+table:
+  A:
+    1: {write: 0, R: B}
+    0: {write: 0, L: E}  # input is even
+  B:
+    1: {write: 1, R: B}
+    0: {write: 1, L: C}
+  C:
+    1: {write: 0, L: D}  # common case
+    0: {write: 1, L: G}  # input is odd
+  D: 
+    1: {write: 1, L: D}
+    0: {write: 1, R: A}
+  E: # 这里有多重设计, 向左清零 vs 向右清零
+    1: {write: 0, L: E}
+    0: {write: 0, R: F}
+  F: # goto (1A) 
+    0: {write: 0, R: F}
+    1: {write: 0, R: B} # similar to A
+  G: 
+    0: {write: 0, R: F} 
+    1: {write: 0, R: H}
+  H: 
+    1: {write: 1, R: H}
+    0: {write: 1, L: J} 
+  J: 
+    1: {write: 1, L: J}
+    0: {write: 1, L: G} 
+
+
+
