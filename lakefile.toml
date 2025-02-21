@@ -1,0 +1,31 @@
+name = "collatz_function"
+version = "0.1.0"
+keywords = ["math"]
+defaultTargets = ["CollatzFunction"]
+
+[leanOptions]
+pp.unicode.fun = true # pretty-prints `fun a ↦ b`
+autoImplicit = false
+
+[[require]]
+name = "mathlib"
+scope = "leanprover-community"
+
+[[lean_lib]]
+name = "CollatzFunction"
+
+[[lean_exe]]
+name = "Sim9"
+srcDir = "CollatzFunction/NonHalt"
+
+[[lean_exe]]
+name = "Sim10"
+srcDir = "CollatzFunction/Halt"
+
+[[lean_exe]]
+name = "SearchUnvisitedBranch"
+srcDir = "CollatzFunction/NonHalt"
+
+[[lean_exe]]
+name = "SearchUnvisitedBranch10"
+srcDir = "CollatzFunction/Halt"
