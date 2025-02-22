@@ -14,10 +14,10 @@ open Lean Meta Elab Tactic Std Term TmState Γ
 
 -- if n ≥ 1, n -> collatz n
 theorem F_collatz (n: ℕ) (_ : n ≥ 1) (i: ℕ)
-(h : nth_cfg i = some ⟨F, ⟨one,
+(h : nth_cfg i =  ⟨F, ⟨one,
   Turing.ListBlank.mk [],
   Turing.ListBlank.mk (List.replicate (n-1) one)⟩⟩) :
-∃ j>i, nth_cfg j = some ⟨F, ⟨one,
+∃ j>i, nth_cfg j =  ⟨F, ⟨one,
   Turing.ListBlank.mk [],
   Turing.ListBlank.mk (List.replicate ((collatz n)-1) one)⟩⟩
 := by

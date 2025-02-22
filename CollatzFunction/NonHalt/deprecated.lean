@@ -1,10 +1,10 @@
 -- deprecated F_collatz is better
 -- if n >= 3, n -> collatz n
 lemma B_collatz (n: ℕ) (_ : n > 0) (i: ℕ)
-(h : nth_cfg i = some ⟨B, ⟨one,
+(h : nth_cfg i =  ⟨B, ⟨one,
   Turing.ListBlank.mk [],
   Turing.ListBlank.mk (List.replicate n one)⟩⟩) :
-∃ j>i, nth_cfg j = some ⟨B, ⟨one,
+∃ j>i, nth_cfg j =  ⟨B, ⟨one,
   Turing.ListBlank.mk [],
   Turing.ListBlank.mk (List.replicate ((collatz (n+2))-2) one)⟩⟩
 := by

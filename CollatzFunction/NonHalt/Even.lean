@@ -6,10 +6,10 @@ namespace NonHalt
 open Lean Meta Elab Tactic Std Term TmState Γ
 
 lemma B_even (n: ℕ) (h_even : Even n): ∀ (i: ℕ)(l r: List Γ),
-nth_cfg i = some ⟨B, ⟨one,
+nth_cfg i =  ⟨B, ⟨one,
   Turing.ListBlank.mk (zero :: l),
   Turing.ListBlank.mk (List.replicate n one ++ zero :: r)⟩⟩ →
-∃ j>i, nth_cfg j = some ⟨A, ⟨zero,
+∃ j>i, nth_cfg j =  ⟨A, ⟨zero,
   Turing.ListBlank.mk (List.replicate (1+n/2) one ++ l),
   Turing.ListBlank.mk (List.replicate (1+n/2) one ++ r)⟩⟩
 := by

@@ -36,7 +36,7 @@ instance : ToString TmState where
   toString := TmState.toString
 
 
-def Machine := TmState → Γ → Option (TmState × Stmt)
+def Machine := TmState → Γ → TmState × Stmt
 
 structure Cfg where
   /-- The current machine state. -/
@@ -57,37 +57,37 @@ instance : ToString Cfg where
 def init (l : List Γ) : Cfg := ⟨TmState.F, Turing.Tape.mk₁ l⟩
 
 /-- Execution semantics of the Turing machine. -/
-def step (M : Machine) : Cfg → Option Cfg :=
-  fun ⟨q, T⟩ ↦ (M q T.1).map fun ⟨q', a⟩ ↦ ⟨q', (T.write a.write).move a.move⟩
+def step (M : Machine) : Cfg → Cfg :=
+  fun ⟨q, T⟩ ↦ let x := M q T.head
+                let q' := x.1
+                let a := x.2
+                ⟨q', (T.write a.write).move a.move⟩
 
 
 def machine : Machine
-| A, Γ.zero => some ⟨E, ⟨Turing.Dir.left, Γ.zero⟩⟩
-| A, Γ.one => some ⟨B, ⟨Turing.Dir.right, Γ.zero⟩⟩
-| B, Γ.zero => some ⟨C, ⟨Turing.Dir.left, Γ.one⟩⟩
-| B, Γ.one => some ⟨B, ⟨Turing.Dir.right, Γ.one⟩⟩
-| C, Γ.zero => some ⟨G, ⟨Turing.Dir.left, Γ.one⟩⟩
-| C, Γ.one => some ⟨D, ⟨Turing.Dir.left, Γ.zero⟩⟩
-| D, Γ.zero => some ⟨A, ⟨Turing.Dir.right, Γ.one⟩⟩
-| D, Γ.one => some ⟨D, ⟨Turing.Dir.left, Γ.one⟩⟩
-| E, Γ.zero => some ⟨F, ⟨Turing.Dir.right, Γ.zero⟩⟩
-| E, Γ.one => some ⟨E, ⟨Turing.Dir.left, Γ.zero⟩⟩
-| F, Γ.zero => some ⟨F, ⟨Turing.Dir.right, Γ.zero⟩⟩
-| F, Γ.one => some ⟨B, ⟨Turing.Dir.right, Γ.zero⟩⟩
-| G, Γ.zero => some ⟨F, ⟨Turing.Dir.right, Γ.zero⟩⟩
-| G, Γ.one => some ⟨H, ⟨Turing.Dir.right, Γ.zero⟩⟩
-| H, Γ.zero => some ⟨J, ⟨Turing.Dir.left, Γ.one⟩⟩
-| H, Γ.one => some ⟨H, ⟨Turing.Dir.right, Γ.one⟩⟩
-| J, Γ.zero => some ⟨G, ⟨Turing.Dir.left, Γ.one⟩⟩
-| J, Γ.one => some ⟨J, ⟨Turing.Dir.left, Γ.one⟩⟩
+| A, Γ.zero =>  ⟨E, ⟨Turing.Dir.left, Γ.zero⟩⟩
+| A, Γ.one =>  ⟨B, ⟨Turing.Dir.right, Γ.zero⟩⟩
+| B, Γ.zero =>  ⟨C, ⟨Turing.Dir.left, Γ.one⟩⟩
+| B, Γ.one =>  ⟨B, ⟨Turing.Dir.right, Γ.one⟩⟩
+| C, Γ.zero =>  ⟨G, ⟨Turing.Dir.left, Γ.one⟩⟩
+| C, Γ.one =>  ⟨D, ⟨Turing.Dir.left, Γ.zero⟩⟩
+| D, Γ.zero =>  ⟨A, ⟨Turing.Dir.right, Γ.one⟩⟩
+| D, Γ.one =>  ⟨D, ⟨Turing.Dir.left, Γ.one⟩⟩
+| E, Γ.zero =>  ⟨F, ⟨Turing.Dir.right, Γ.zero⟩⟩
+| E, Γ.one =>  ⟨E, ⟨Turing.Dir.left, Γ.zero⟩⟩
+| F, Γ.zero =>  ⟨F, ⟨Turing.Dir.right, Γ.zero⟩⟩
+| F, Γ.one =>  ⟨B, ⟨Turing.Dir.right, Γ.zero⟩⟩
+| G, Γ.zero =>  ⟨F, ⟨Turing.Dir.right, Γ.zero⟩⟩
+| G, Γ.one =>  ⟨H, ⟨Turing.Dir.right, Γ.zero⟩⟩
+| H, Γ.zero =>  ⟨J, ⟨Turing.Dir.left, Γ.one⟩⟩
+| H, Γ.one =>  ⟨H, ⟨Turing.Dir.right, Γ.one⟩⟩
+| J, Γ.zero =>  ⟨G, ⟨Turing.Dir.left, Γ.one⟩⟩
+| J, Γ.one =>  ⟨J, ⟨Turing.Dir.left, Γ.one⟩⟩
 
 
-def nth_cfg : Nat -> Option Cfg
+def nth_cfg : Nat -> Cfg
 | 0 => init []
-| Nat.succ n => match (nth_cfg n) with
-                | none => none
-                | some cfg =>  step machine cfg
-
+| Nat.succ n => step machine (nth_cfg n)
 
 -- https://leanprover.zulipchat.com/#narrow/channel/270676-lean4/topic/binderIdent.20vs.20Ident/near/402516388
 def toBinderIdent (i : Ident) : TSyntax ``binderIdent := Unhygienic.run <|
@@ -112,7 +112,7 @@ elab "forward" g:ident : tactic => withSynthesize <| withMainContext do
         )))
       else
         throwError "The first argument of {g} is not a Nat"
-  | _ => logInfo m!"please forward on nth_cfg i = some ⟨...⟩"
+  | _ => logInfo m!"please forward on nth_cfg i =  ⟨...⟩"
 
 
 end NonHalt

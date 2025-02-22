@@ -9,10 +9,10 @@ open Lean Meta Elab Tactic Std Term TmState
 
 -- left
 theorem recD (k : ℕ): ∀ (i : ℕ) (l r : List Γ),
-nth_cfg i = some ⟨D, ⟨Γ.one,
+nth_cfg i =  ⟨D, ⟨Γ.one,
   Turing.ListBlank.mk (List.replicate k Γ.one ++ List.cons Γ.zero l),
   Turing.ListBlank.mk r⟩⟩ →
-nth_cfg (i + k + 1) = some ⟨D, ⟨Γ.zero,
+nth_cfg (i + k + 1) =  ⟨D, ⟨Γ.zero,
   Turing.ListBlank.mk l,
   Turing.ListBlank.mk (List.replicate (k+1) Γ.one ++ r)⟩⟩ := by
 induction k with intros i l r h
@@ -25,10 +25,10 @@ induction k with intros i l r h
             . simp! [nth_cfg, h, step, machine, Turing.Tape.write, Turing.Tape.move]
 
 theorem recJ (k : ℕ): ∀ (i : ℕ) (l r : List Γ),
-nth_cfg i = some ⟨J, ⟨Γ.one,
+nth_cfg i =  ⟨J, ⟨Γ.one,
   Turing.ListBlank.mk (List.replicate k Γ.one ++ List.cons Γ.zero l),
   Turing.ListBlank.mk r⟩⟩ →
-nth_cfg (i + k + 1) = some ⟨J, ⟨Γ.zero,
+nth_cfg (i + k + 1) =  ⟨J, ⟨Γ.zero,
   Turing.ListBlank.mk l,
   Turing.ListBlank.mk (List.replicate (k+1) Γ.one ++ r)⟩⟩ := by
 induction k with intros i l r h
@@ -43,10 +43,10 @@ induction k with intros i l r h
 
 --right
 theorem recB (k : ℕ): ∀ (i : ℕ) (l r : List Γ),
-nth_cfg i = some ⟨B, ⟨Γ.one,
+nth_cfg i =  ⟨B, ⟨Γ.one,
   Turing.ListBlank.mk l,
   Turing.ListBlank.mk (List.replicate k Γ.one ++ List.cons Γ.zero r) ⟩⟩ →
-nth_cfg (i + k + 1) = some ⟨B, ⟨Γ.zero,
+nth_cfg (i + k + 1) =  ⟨B, ⟨Γ.zero,
   Turing.ListBlank.mk (List.replicate (k+1) Γ.one ++ l),
   Turing.ListBlank.mk r⟩⟩ := by
 induction k with intros i l r h
@@ -59,10 +59,10 @@ induction k with intros i l r h
             . simp! [nth_cfg, h, step, machine, Turing.Tape.write, Turing.Tape.move]
 
 theorem recH (k : ℕ): ∀ (i : ℕ) (l r : List Γ),
-nth_cfg i = some ⟨H, ⟨Γ.one,
+nth_cfg i =  ⟨H, ⟨Γ.one,
   Turing.ListBlank.mk l,
   Turing.ListBlank.mk (List.replicate k Γ.one ++ List.cons Γ.zero r) ⟩⟩ →
-nth_cfg (i + k + 1) = some ⟨H, ⟨Γ.zero,
+nth_cfg (i + k + 1) =  ⟨H, ⟨Γ.zero,
   Turing.ListBlank.mk (List.replicate (k+1) Γ.one ++ l),
   Turing.ListBlank.mk r⟩⟩ := by
 induction k with intros i l r h

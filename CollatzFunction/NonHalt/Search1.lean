@@ -8,10 +8,10 @@ open Lean Meta Elab Tactic Std Term TmState
 
 --right
 theorem recF (k : ℕ): ∀ (i : ℕ) (l r : List Γ) (γ : Γ),
-nth_cfg i = some ⟨F, ⟨Γ.zero,
+nth_cfg i =  ⟨F, ⟨Γ.zero,
   Turing.ListBlank.mk l,
   Turing.ListBlank.mk (List.replicate k Γ.zero ++ List.cons γ r) ⟩⟩ →
-nth_cfg (i + k + 1) = some ⟨F, ⟨γ,
+nth_cfg (i + k + 1) =  ⟨F, ⟨γ,
   Turing.ListBlank.mk (List.replicate (k+1) Γ.zero ++ l),
   Turing.ListBlank.mk r⟩⟩ := by
 induction k with intros i l r γ h
