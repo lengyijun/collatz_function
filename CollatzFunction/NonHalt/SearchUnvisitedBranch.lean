@@ -8,12 +8,11 @@ open Lean Meta Elab Tactic Std Term TmState
 
 unsafe def foo (cfg : Cfg) (unvisited : List (TmState × Γ)): IO Unit :=
 do
+  IO.println s!"{cfg}"
   let unvisited <- pure (List.removeAll unvisited [⟨cfg.q, cfg.tape.head⟩])
   IO.println s!"{unvisited}"
-  match (step machine cfg) with
-  | some cfg => IO.println s!"{cfg}"
-                foo cfg unvisited
-  | none => IO.println s!"halt"
+  let cfg <- pure (step machine cfg)
+  foo cfg unvisited
 
 
 unsafe def main : List String → IO Unit

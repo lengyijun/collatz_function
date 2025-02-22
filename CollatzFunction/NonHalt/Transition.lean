@@ -7,10 +7,10 @@ open Lean Meta Elab Tactic Std Term TmState Γ
 
 theorem lemma_G_to_H (r: List Γ)(r1: ℕ)(i : ℕ)(l: List Γ)
 (h :
-nth_cfg i = some ⟨G, ⟨Γ.one,
+nth_cfg i =  ⟨G, ⟨Γ.one,
   Turing.ListBlank.mk l,
   Turing.ListBlank.mk (List.replicate r1 Γ.one ++ List.cons Γ.zero r)⟩⟩) :
-nth_cfg (i+r1+1) = some ⟨H, ⟨Γ.zero,
+nth_cfg (i+r1+1) =  ⟨H, ⟨Γ.zero,
   Turing.ListBlank.mk (List.replicate r1 Γ.one ++ List.cons Γ.zero l),
   Turing.ListBlank.mk r⟩⟩
 := by
@@ -24,10 +24,10 @@ cases r1 with
 
 theorem lemma_H_to_J (r: List Γ)(r1: ℕ)(i : ℕ)(l: List Γ)
 (h :
-nth_cfg i = some ⟨H, ⟨Γ.zero,
+nth_cfg i =  ⟨H, ⟨Γ.zero,
   Turing.ListBlank.mk (List.replicate r1 Γ.one ++ List.cons Γ.zero r),
   Turing.ListBlank.mk l⟩⟩) :
-nth_cfg (i+r1+1) = some ⟨J, ⟨Γ.zero,
+nth_cfg (i+r1+1) =  ⟨J, ⟨Γ.zero,
   Turing.ListBlank.mk r,
   Turing.ListBlank.mk (List.replicate r1 Γ.one ++ List.cons Γ.one l)⟩⟩
 := by

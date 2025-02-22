@@ -4,11 +4,9 @@ import CollatzFunction.Basic
 open NonHalt
 
 unsafe def foo (cfg : Cfg) : IO Unit :=
-match (step machine cfg) with
-| some cfg => do
-                IO.println s!"{cfg}"
-                foo cfg
-| none => IO.println s!"halt"
+  do
+    IO.println s!"{cfg}"
+    foo (step machine cfg)
 
 
 unsafe def main (args : List String) : IO Unit :=
