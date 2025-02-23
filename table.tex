@@ -2,6 +2,7 @@
 
 \documentclass[10pt]{article}
 \usepackage{amssymb}
+\usepackage{xcolor}
 
 \addtolength{\oddsidemargin}{-1cm}
 \addtolength{\textwidth}{2cm}
@@ -114,23 +115,28 @@ symbol $x_k$ in state $A$.
 \begin{table}
 $$\begin{array}{c|c|c|c|c|c|c|c|c|c|c|c|c|c}
 \mbox{symbols} & \multicolumn{13}{c}{}\\                                                \cline{1-3}
-10             & Ma    & \mbox{\bf Mi}_2& \multicolumn{11}{c}{}\\                       \cline{1-3}
+10             & \textcolor{green}{Ma}    & \mbox{\bf Mi}_2& \multicolumn{11}{c}{}\\                       \cline{1-3}
 9              &       &      &\multicolumn{11}{c}{}\\                                  \cline{1-3}
-8              & Ba    &      &\multicolumn{11}{c}{}\\                                  \cline{1-3}
+8              & \textcolor{green}{Ba}    &      &\multicolumn{11}{c}{}\\                                  \cline{1-3}
 7              &       &      &\multicolumn{11}{c}{}\\                                  \cline{1-4}
-6              &       & Ma   &  \mbox{\bf Mi}_2 & \multicolumn{10}{c}{}\\          \cline{1-4}
-5              &       & Ba   &                  & \multicolumn{10}{c}{}\\          \cline{1-5}
-4              &       & Mi_2 & Ma               &\mbox{\bf Mi}_2 & \multicolumn{9}{c}{}\\         \cline{1-6}
-3              &       &      &                  & Ma   &\mbox{\bf Mi}_1 & \multicolumn{8}{c}{}\\  \cline{1-13}
-2              &       &      &    &      &      &     &     &     & Ba  & Ma & & \mbox{\bf Mi}_2\\  \hline
+6              &       & \textcolor{green}{Ma}   &  \mbox{\bf Mi}_2 & \multicolumn{10}{c}{}\\          \cline{1-4}
+5              &       & \textcolor{green}{Ba}   &                  & \multicolumn{10}{c}{}\\          \cline{1-5}
+4              &       & \textcolor{red}{Mi_2} & \textcolor{green}{Ma}               &\mbox{\bf Mi}_2 & \multicolumn{9}{c}{}\\         \cline{1-6}
+3              &       &      &                  & \textcolor{blue}{Ma}   &\mbox{\bf Mi}_1 & \multicolumn{8}{c}{}\\  \cline{1-13}
+2              &       &      &    &      &      &     & \textcolor{green}{Yj}   &   & \textcolor{green}{Ba}  & \textcolor{blue}{Ma} & & \mbox{\bf Mi}_2\\  \hline
                & 2     & 3    & 4  & 5    &\,6\, &\,7\,&\,8\,&\,9\,& 10  & 11 & 12 & 13 & \mbox{states}
 \end{array}$$
 \caption{Turing machines simulating the $3x + 1$ function:
 $Ma=$ Margenstern \cite{Ma98,Ma00},
 $Ba=$ Baiocchi \cite{Ba98},
 $Mi_1=$ Michel \cite{Mi93},
-$Mi_2=$ Michel (this paper).
-In roman boldface, halting machines.}
+$Mi_2=$ Michel \cite{Mi14}.
+$Yj=$ Yijun Leng (this repo).
+In roman boldface, halting machines.
+Green: unary;
+Blue: base 2;
+Red: base 3;
+}
 \end{table}
 
 \section{The known Turing machines}
@@ -449,6 +455,8 @@ a survey, \emph{Theoret.\ Comput.\ Sci.} {\bf 231}, 2000, 217--251.
 
 \bibitem{Mi93} P.\ Michel, Busy beaver competition and Collatz-like problems,
 \emph{Arch.\ Math.\ Logic} {\bf 32} (5), 1993, 351--367.
+
+\bibitem{Mi14} P.\ Michel, Simulation of the Collatz 3x+ 1 function by Turing machines. arXiv preprint arXiv:1409.7322. 2014 Sep 25.
 
 \bibitem{MM10} P.\ Michel and M.\ Margenstern, Generalized 3$x$+1 functions and the theory of computation,
 in \cite{La10}, 105--128.
