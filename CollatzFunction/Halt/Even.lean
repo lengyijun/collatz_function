@@ -5,16 +5,16 @@ namespace Halt
 
 open Lean Meta Elab Tactic Std Term TmState Γ
 
-lemma B_even (n: ℕ) (h_even : Even n): ∀ (i: ℕ)(l r: List Γ),
-nth_cfg i = some ⟨B, ⟨one,
+lemma B_even (n: ℕ) (h_even : Even n): ∀ (i: ℕ)(l r: List Γ)(init_cfg: Cfg),
+nth_cfg init_cfg i = some ⟨B, ⟨one,
   Turing.ListBlank.mk (zero :: l),
   Turing.ListBlank.mk (List.replicate n one ++ zero :: r)⟩⟩ →
-∃ j>i, nth_cfg j = some ⟨A, ⟨zero,
+∃ j>i, nth_cfg init_cfg j = some ⟨A, ⟨zero,
   Turing.ListBlank.mk (List.replicate (1+n/2) one ++ l),
   Turing.ListBlank.mk (List.replicate (1+n/2) one ++ r)⟩⟩
 := by
 induction' n using Nat.strongRecOn with n IH
-intros i l r h
+intros i l r init_cfg h
 cases n with
 | zero => simp
           forward h
@@ -52,11 +52,11 @@ cases n with
                 | zero => omega
                 | succ k => use k; omega
 
-lemma K_even (n: ℕ) (h_even : Even n) (i: ℕ) (l r: List Γ):
-nth_cfg i = some ⟨K, ⟨one,
+lemma K_even (n: ℕ) (h_even : Even n) (i: ℕ) (l r: List Γ) (init_cfg: Cfg):
+nth_cfg init_cfg i = some ⟨K, ⟨one,
   Turing.ListBlank.mk (zero :: l),
   Turing.ListBlank.mk (List.replicate n one ++ zero :: r)⟩⟩ →
-∃ j>i, nth_cfg j = some ⟨A, ⟨zero,
+∃ j>i, nth_cfg init_cfg j = some ⟨A, ⟨zero,
   Turing.ListBlank.mk (List.replicate (1+n/2) one ++ l),
   Turing.ListBlank.mk (List.replicate (1+n/2) one ++ r)⟩⟩
 := by
