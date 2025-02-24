@@ -6,11 +6,11 @@ namespace NonHalt
 
 open Lean Meta Elab Tactic Std Term TmState Γ
 
-private lemma copy_half_step (a i b: ℕ)
-(h : nth_cfg i =  ⟨G, ⟨one,
+private lemma copy_half_step (a i b: ℕ) (init_cfg: Cfg)
+(h : nth_cfg init_cfg i =  ⟨G, ⟨one,
   Turing.ListBlank.mk (List.replicate (a+1) one),
   Turing.ListBlank.mk (List.replicate b one)⟩⟩) :
-nth_cfg (3 + i + b * 2) =  ⟨G, ⟨one,
+nth_cfg init_cfg (3 + i + b * 2) =  ⟨G, ⟨one,
   Turing.ListBlank.mk (List.replicate a one),
   Turing.ListBlank.mk (List.replicate (b+2) one)⟩⟩
 := by
@@ -25,15 +25,15 @@ rw [← List.replicate_succ]
 rw [← List.replicate_one]
 rw [List.replicate_append_replicate]
 
-theorem copy_half (a : ℕ): ∀ (i b: ℕ),
-nth_cfg i =  ⟨G, ⟨one,
+theorem copy_half (a : ℕ): ∀ (i b: ℕ)(init_cfg: Cfg),
+nth_cfg init_cfg i =  ⟨G, ⟨one,
   Turing.ListBlank.mk (List.replicate a one),
   Turing.ListBlank.mk (List.replicate b one)⟩⟩ →
-nth_cfg (i + a * (2*a+2*b+1)) =  ⟨G, ⟨one,
+nth_cfg init_cfg (i + a * (2*a+2*b+1)) =  ⟨G, ⟨one,
   Turing.ListBlank.mk [],
   Turing.ListBlank.mk (List.replicate (b+a*2) one)⟩⟩
 := by
-induction a with intros i b h
+induction a with intros i b init_cfg h
 | zero => simp_all
 | succ a ih =>
   apply copy_half_step at h
@@ -41,16 +41,16 @@ induction a with intros i b h
   ring_nf at *
   rw [← h]
 
-lemma B_odd (n: ℕ) (h_odd : Odd n): ∀ (i: ℕ)(l r: List Γ),
-nth_cfg i =  ⟨B, ⟨one,
+lemma B_odd (n: ℕ) (h_odd : Odd n): ∀ (i: ℕ)(l r: List Γ)(init_cfg: Cfg),
+nth_cfg init_cfg i =  ⟨B, ⟨one,
   Turing.ListBlank.mk (zero :: l),
   Turing.ListBlank.mk (List.replicate n one ++ zero :: r)⟩⟩ →
-∃ j>i, nth_cfg j =  ⟨C, ⟨zero,
+∃ j>i, nth_cfg init_cfg j =  ⟨C, ⟨zero,
   Turing.ListBlank.mk (List.replicate ((n+1)/2) one ++ l),
   Turing.ListBlank.mk (List.replicate (1+(n+1)/2) one ++ r)⟩⟩
 := by
 induction' n using Nat.strongRecOn with n IH
-intros i l r h
+intros i l r init_cfg h
 cases n with
 | zero => tauto
 | succ n => cases n with

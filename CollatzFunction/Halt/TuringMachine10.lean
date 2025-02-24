@@ -86,9 +86,9 @@ def machine : Machine
 | K, Γ.one => some ⟨B, ⟨Turing.Dir.right, Γ.one⟩⟩
 
 
-def nth_cfg : Nat -> Option Cfg
-| 0 => init []
-| Nat.succ n => match (nth_cfg n) with
+def nth_cfg (init_cfg: Cfg): Nat -> Option Cfg
+| 0 => init_cfg
+| Nat.succ n => match (nth_cfg init_cfg n) with
                 | none => none
                 | some cfg =>  step machine cfg
 
@@ -101,12 +101,13 @@ elab "forward" g:ident : tactic => withSynthesize <| withMainContext do
   let some ldecl := (← getLCtx).findFromUserName? g.getId
     | throwErrorAt g m!"Identifier {g} not found"
   match ldecl with
-  | LocalDecl.cdecl _ _ _ (Expr.app (Expr.app _ (Expr.app _ arg)) _) _ _ =>
-      let argType ← inferType arg
+  | LocalDecl.cdecl _ _ _ (Expr.app (Expr.app _ (Expr.app (Expr.app _ cfg) i)) _) _ _ =>
+      let argType ← inferType i
       if ← isDefEq argType (mkConst ``Nat) then
-        let arg ← Elab.Term.exprToSyntax arg
+        let i ← Elab.Term.exprToSyntax i
+        let cfg ← Elab.Term.exprToSyntax cfg
         evalTactic (← `(tactic| (
-            have h : nth_cfg ($arg + 1) = nth_cfg ($arg + 1) := rfl
+            have h : nth_cfg $cfg ($i + 1) = nth_cfg $cfg ($i + 1) := rfl
             nth_rewrite 2 [nth_cfg] at h
             simp [*, step, Option.map, machine, Turing.Tape.write, Turing.Tape.move] at h
             try simp! [*, -nth_cfg] at h
@@ -115,8 +116,8 @@ elab "forward" g:ident : tactic => withSynthesize <| withMainContext do
             rename_i $(toBinderIdent g)
         )))
       else
-        throwError "The first argument of {g} is not a Nat"
-  | _ => logInfo m!"please forward on nth_cfg i = some ⟨...⟩"
+        throwError "The second argument of {g} is not a Nat"
+  | _ => logInfo m!"please forward on nth_cfg cfg i =  ⟨...⟩"
 
 
 end Halt
