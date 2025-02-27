@@ -52,7 +52,7 @@ instance : ToString Cfg where
     s!"{q}   {s}"
 
 /-- The initial configuration. -/
-def init (l : List Γ) : Cfg := ⟨TmState.E, Turing.Tape.mk₁ l⟩
+def init (l : List Γ) : Cfg := ⟨TmState.G, Turing.Tape.mk₁ l⟩
 
 /-- Execution semantics of the Turing machine. -/
 def step (M : Machine) : Cfg → Cfg :=
@@ -71,8 +71,8 @@ def machine : Machine
 | C, Γ.one =>  ⟨D, ⟨Turing.Dir.left, Γ.zero⟩⟩
 | D, Γ.zero => ⟨A, ⟨Turing.Dir.right, Γ.one⟩⟩
 | D, Γ.one =>  ⟨D, ⟨Turing.Dir.left, Γ.one⟩⟩
-| E, Γ.zero => ⟨A, ⟨Turing.Dir.right, Γ.zero⟩⟩
-| E, Γ.one =>  ⟨E, ⟨Turing.Dir.right, Γ.zero⟩⟩
+| E, Γ.zero => ⟨G, ⟨Turing.Dir.right, Γ.zero⟩⟩ -- only used in `collatz 0`
+| E, Γ.one =>  ⟨G, ⟨Turing.Dir.right, Γ.zero⟩⟩
 | G, Γ.zero => ⟨A, ⟨Turing.Dir.right, Γ.zero⟩⟩
 | G, Γ.one =>  ⟨H, ⟨Turing.Dir.right, Γ.zero⟩⟩
 | H, Γ.zero => ⟨J, ⟨Turing.Dir.left, Γ.one⟩⟩
