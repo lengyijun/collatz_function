@@ -14,10 +14,9 @@ nth_cfg init_cfg (3 + i + b * 2) =  ⟨G, ⟨one,
   Turing.ListBlank.mk (List.replicate a one),
   Turing.ListBlank.mk (List.replicate (b+2) one)⟩⟩
 := by
-have g := lemma_G_to_H [] b
+have g := G_to_J [] b
 rw [ListBlank_empty_eq_single_zero] at g
 apply g at h
-apply lemma_H_to_J at h
 forward h
 simp [h]
 rw [← List.cons_append]

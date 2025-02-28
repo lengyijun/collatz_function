@@ -90,8 +90,7 @@ cases n with
       rw [← List.replicate_succ] at h
       apply copy_half at h
       rw [← (ListBlank_empty_eq_single_zero (List.replicate _ one))] at h
-      apply lemma_G_to_H at h
-      apply lemma_H_to_J at h
+      apply G_to_J at h
       forward h
       forward h
       use (11 + j + n / 2 * 13 + (n / 2) ^ 2 * 4)
