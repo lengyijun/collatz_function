@@ -84,6 +84,65 @@ cases n with
                           . use k; omega
 
 
+variable {a b c : ℕ}
+
+lemma F_even (n i: ℕ)  (_ : n ≥ 1) (h_even: Even n) (init_cfg: Cfg)
+(h : nth_cfg init_cfg i =  ⟨F, ⟨one,
+  Turing.ListBlank.mk [],
+  Turing.ListBlank.mk (List.replicate (n-1) one)⟩⟩) :
+nth_cfg init_cfg (i+(n^2+5*n)/2+3) =  ⟨F, ⟨one,
+  Turing.ListBlank.mk [],
+  Turing.ListBlank.mk (List.replicate ((collatz n)-1) one)⟩⟩
+:= by
+cases n with
+| zero => omega
+| succ n => cases n with
+            | zero => tauto
+            | succ n => obtain ⟨k, h_even⟩ := h_even
+                        cases k with
+                        | zero => omega
+                        | succ k =>
+                          have h_even : n = 2 * k := by omega
+                          subst n
+                          forward h
+                          rw [add_comm 1 (k*2)] at h
+                          rw [List.replicate_succ] at h
+                          simp at h
+                          rw [← (ListBlank_empty_eq_single_zero (List.replicate _ one))] at h
+                          apply B_even at h
+                          . forward h
+                            rw [add_comm 1 k] at h
+                            rw [List.replicate_succ] at h
+                            simp at h
+                            rw [← (ListBlank_empty_eq_single_zero (List.replicate _ one))] at h
+                            apply E_zeroing at h
+                            forward h
+                            apply recF at h
+                            forward h
+                            simp [collatz]
+                            ring_nf at *
+                            simp
+                            have g : k * 14 / 2  = k  * 7 := by omega
+                            rw [g] at h
+                            have g : (14 + k * 18 + k ^ 2 * 4) / 2 = 7 + k * 9 + k ^ 2 * 2 := by omega
+                            rw [g]
+                            have g : k ^ 2 * 4 / 2  = k ^ 2 * 2 := by omega
+                            rw [g] at h
+                            ring_nf at *
+                            simp [h]
+                            simp! [Turing.ListBlank.mk]
+                            rw [Quotient.eq'']
+                            right
+                            use (3+k)
+                            simp
+                            rw [← List.replicate_one]
+                            rw [List.replicate_append_replicate]
+                            rw [← List.replicate_succ]
+                            rw [← List.replicate_succ]
+                            ring_nf
+                            tauto
+                          . use k; omega
+
 -- if n ≥ 1, n -> collatz n
 theorem F_collatz (n: ℕ) (_ : n ≥ 1) (i: ℕ) (init_cfg: Cfg)
 (h : nth_cfg init_cfg i =  ⟨F, ⟨one,
