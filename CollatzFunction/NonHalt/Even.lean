@@ -9,7 +9,7 @@ lemma B_even (n: ℕ) (h_even : Even n): ∀ (i: ℕ)(l r: List Γ)(init_cfg: Cf
 nth_cfg init_cfg i =  ⟨B, ⟨one,
   Turing.ListBlank.mk (zero :: l),
   Turing.ListBlank.mk (List.replicate n one ++ zero :: r)⟩⟩ →
-∃ j>i, nth_cfg init_cfg j =  ⟨A, ⟨zero,
+nth_cfg init_cfg (i+ (n^2)/2 + 7 * n/2 + 4) = ⟨A, ⟨zero,
   Turing.ListBlank.mk (List.replicate (1+n/2) one ++ l),
   Turing.ListBlank.mk (List.replicate (1+n/2) one ++ r)⟩⟩
 := by
@@ -21,7 +21,7 @@ cases n with
           forward h
           forward h
           forward h
-          use (4+i)
+          ring_nf at *
           simp [h]
 | succ n => cases n with
   | zero => tauto
@@ -29,15 +29,10 @@ cases n with
               apply B_step at h
               specialize IH n (by omega)
               apply IH at h
-              . obtain ⟨j, _, h⟩ := h
-                use j
-                constructor
-                any_goals omega
+              . ring_nf at *
+                have g : 4 + i + (4 + n * 4 + n ^ 2) / 2 + (14 + n * 7) / 2 = (13 + i + n * 2 + n ^ 2 / 2 + n * 7 / 2) := by omega
+                rw [g]
                 simp [h]
-                ring_nf
-                have h : (2+n)/2 = n/2+1 := by omega
-                rw [h]
-                ring_nf
                 rw [List.append_cons]
                 rw [← List.replicate_one]
                 rw [List.replicate_append_replicate]

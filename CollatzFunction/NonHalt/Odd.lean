@@ -44,7 +44,7 @@ lemma B_odd (n: ℕ) (h_odd : Odd n): ∀ (i: ℕ)(l r: List Γ)(init_cfg: Cfg),
 nth_cfg init_cfg i =  ⟨B, ⟨one,
   Turing.ListBlank.mk (zero :: l),
   Turing.ListBlank.mk (List.replicate n one ++ zero :: r)⟩⟩ →
-∃ j>i, nth_cfg init_cfg j =  ⟨C, ⟨zero,
+nth_cfg init_cfg (i + (n^2 + 7 * n)/ 2 + 4) = ⟨C, ⟨zero,
   Turing.ListBlank.mk (List.replicate ((n+1)/2) one ++ l),
   Turing.ListBlank.mk (List.replicate (1+(n+1)/2) one ++ r)⟩⟩
 := by
@@ -62,30 +62,48 @@ cases n with
             forward h
             forward h
             forward h
-            use (8+i)
+            ring_nf at *
             simp [h]
   | succ n => ring_nf at h
               apply B_step at h
               specialize IH n (by omega)
               apply IH at h
-              . obtain ⟨j, _, h⟩ := h
-                use j
-                constructor
-                any_goals omega
+              . ring_nf at *
+                have g : (4 + i + (18 + n * 11 + n ^ 2) / 2) =
+                (13 + i + n * 2 + (n * 7 + n ^ 2) / 2) := by omega
+                rw [g]
                 simp [h]
-                ring_nf
-                have h : (3+n)/2 = (1+n)/2+1 := by omega
-                rw [h]
-                ring_nf
-                rw [List.append_cons]
-                rw [← List.replicate_one]
-                rw [List.replicate_append_replicate]
-                ring_nf
-                rw [List.append_cons]
-                rw [← List.replicate_one]
-                rw [List.replicate_append_replicate]
-                ring_nf
-                tauto
+                constructor
+                . rw [List.append_cons]
+                  rw [← List.replicate_one]
+                  rw [List.replicate_append_replicate]
+                  ring_nf
+                  apply congr
+                  any_goals rfl
+                  apply congr
+                  any_goals rfl
+                  apply congr
+                  any_goals rfl
+                  apply congr
+                  any_goals rfl
+                  apply congr
+                  any_goals rfl
+                  omega
+                . rw [List.append_cons]
+                  rw [← List.replicate_one]
+                  rw [List.replicate_append_replicate]
+                  ring_nf
+                  apply congr
+                  any_goals rfl
+                  apply congr
+                  any_goals rfl
+                  apply congr
+                  any_goals rfl
+                  apply congr
+                  any_goals rfl
+                  apply congr
+                  any_goals rfl
+                  omega
               . obtain ⟨k, h_odd⟩ := h_odd
                 cases k with
                 | zero => omega

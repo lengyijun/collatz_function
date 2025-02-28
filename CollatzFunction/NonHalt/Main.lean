@@ -45,7 +45,6 @@ cases n with
   split_ifs <;> rename_i g
   . rw [← (ListBlank_empty_eq_single_zero (List.replicate n one))] at h
     apply B_even at h
-    obtain ⟨j, _, h⟩ := h
     forward h
     rw [add_comm 1 (n/2)] at h
     rw [List.replicate_succ] at h
@@ -55,8 +54,7 @@ cases n with
     forward h
     apply recF at h
     forward h
-    use (5 + j + n / 2 * 2)
-    ring_nf at *
+    use (10 + i + n ^ 2 / 2 + n * 7 / 2 + n / 2 * 2)
     simp [h]
     repeat any_goals apply And.intro
     . omega
@@ -71,6 +69,14 @@ cases n with
       simp
       ring_nf
       tauto
+    . ring_nf
+      apply congr
+      any_goals rfl
+      apply congr
+      any_goals rfl
+      apply congr
+      any_goals rfl
+      omega
     . rw [← Nat.even_iff] at g
       obtain ⟨a, g⟩ := g
       cases a with
@@ -81,7 +87,6 @@ cases n with
     | succ n =>
       rw [← (ListBlank_empty_eq_single_zero (List.replicate (n+1) one))] at h
       apply B_odd at h
-      obtain ⟨j, _, h⟩ := h
       forward h
       have k : (2+n)/2 = n/2 + 1:= by omega
       rw [k] at h
@@ -93,7 +98,7 @@ cases n with
       apply G_to_J at h
       forward h
       forward h
-      use (11 + j + n / 2 * 13 + (n / 2) ^ 2 * 4)
+      use (16 + i + (8 + n * 9 + n ^ 2) / 2 + n / 2 * 13 + (n / 2) ^ 2 * 4)
       simp [h]
       repeat any_goals apply And.intro
       . omega
