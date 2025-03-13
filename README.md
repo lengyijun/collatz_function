@@ -18,17 +18,13 @@ A B C D E G H J  are 8 states.
     - 1 states (E) for even cases
     - 3 states (G, H, J) for odd cases
 
-`000 (0F)    000` denotes 0
+`V 0(0G)  000` denotes 0, V is arbitrary list
 
-`000 (0G)    000` denotes 0
-
-`000 (0F)1^n 000` denotes n
-
-`000 (0G)1^n 000` denotes n
+`V 0(0G)1^n 000` denotes n, V is arbitrary list
 
 let b = collatz n
 
-`000 (0F)1^n 000` -> `000 (0F)1^b 000` or `000 (0G)1^b 000` 
+`V 0(0G)1^n 000` -> `W 0(0G)1^b 000` , V W are arbitrary list
 
 ## Comparsion to previous results
 
